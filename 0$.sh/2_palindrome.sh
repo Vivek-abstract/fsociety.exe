@@ -5,5 +5,11 @@
 
 read -p "Enter number/string: " s
 
-temp=$s
-reverse=$($s | rev) 
+reverse=$(echo $s | rev) 
+
+if [ $s = $reverse ]
+then
+  echo "$s is a Palindrome"
+else
+  echo "$s is not a palindrome"
+fi
