@@ -15,7 +15,8 @@ start:
         ; Initialize SI
         MOV SI, 2000h
         MOV CL, 0h
-up:
+
+inputLoop:
         ; Input string and store in SI
         MOV AH, 01h
         INT 21h
@@ -23,7 +24,7 @@ up:
         INC CL
         INC SI
         CMP AL, 0dh
-        JNZ up
+        JNZ inputLoop
 
         ; Ignore the 0dh(enter)
         SUB SI, 02h
@@ -33,14 +34,14 @@ up:
         MOV AH, 09h
         INT 21h
 
-up2:
+printReverse:
         ; Keep printing char by char in reverse
         MOV DL, [SI]
         MOV AH, 02h
         INT 21h
         DEC SI
         DEC CL
-        JNZ up2
+        JNZ printReverse
 
         MOV AH, 4ch
         INT 21h

@@ -17,7 +17,7 @@ start:
         MOV DI, 3000h
         MOV CL, 00h
 
-up:
+inputLoop:
         ; Input the string
         MOV AH, 01h
         INT 21h
@@ -27,30 +27,31 @@ up:
         INC DI
         INC CL
         CMP AL, 0dh
-        JNZ up
+        JNZ inputLoop
 
         ; Move SI to start of string and DI to end of string, Ignore 0dh in CL
         MOV SI, 2000h
         SUB DI, 02h
         DEC CL
 
-up1:
+compare:
         ; Compare char by char
         MOV AL, [SI]
         CMP AL, [DI]
-        JNZ down
+        JNZ notPalindrome
         INC SI
         DEC DI
         DEC CL
-        JNZ up1
+        JNZ compare
 
+palindrome:
         ; String is palindrome
         MOV DX, offset msg1
         MOV AH, 09h
         INT 21h
         JMP fin
 
-down:
+notPalindrome:
         ; String is not a palindrome
         MOV DX, offset msg2
         MOV AH, 09h

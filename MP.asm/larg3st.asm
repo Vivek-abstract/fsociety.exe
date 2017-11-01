@@ -7,7 +7,6 @@ data ends
 code segment
 assume CS: code, DS: data
 start:
-        ; Program to input, store and output single digit numbers in array
         MOV AX, data
         MOV DS, AX
         MOV SI, 2000h
@@ -24,7 +23,7 @@ start:
         MOV AH, 02h
         INT 21h
 
-l1:
+inputLoop:
         ; Input values into array
         MOV AH, 01h
         INT 21h
@@ -35,7 +34,7 @@ l1:
         INT 21h
 
         INC BX
-        LOOP l1
+        LOOP inputLoop
 
         MOV CX, 5
 
@@ -43,18 +42,18 @@ l1:
         MOV BL, A[0]
         LEA SI, A
 
-l2:
+compare:
         CMP BL, [SI]
-        JL less
-        JMP great
+        JG continue
 
-less:
-        ; BL is less than SI so SI is max
+setMax:
+        ; max < a[i] so set max = a[i]
         MOV BL, [SI]
 
-great:
+continue:
+        ; max > a[i] so continue
         INC SI
-        LOOP l2
+        LOOP compare
 
         ; Now we print BL
         MOV DX, offset msg1
